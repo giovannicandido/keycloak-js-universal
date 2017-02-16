@@ -1,0 +1,62 @@
+{
+  "name": "keycloak-js-universal",
+  "version": "0.1.0",
+  "description": "Keycloak adapter for web, android and ios with nativescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register test/**/*.ts --bail",
+    "test:w": "mocha -w --compilers ts:ts-node/register,tsx:ts-node/register  test/**/*.ts",
+    "lint": "tslint ./src/**/*.ts -t verbose",
+    "cover": "nyc npm t"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atende/keycloak-js-universal.git"
+  },
+  "keywords": [
+    "nativescript",
+    "keycloak"
+  ],
+  "author": "Giovanni Silva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atende/keycloak-js-universal/issues"
+  },
+  "homepage": "https://github.com/atende/keycloak-js-universal#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/es6-promise": "^0.0.32",
+    "@types/mocha": "^2.2.39",
+    "@types/sinon": "^1.16.34",
+    "@types/sinon-chai": "^2.7.27",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0",
+    "ts-node": "^2.0.0",
+    "tslint": "^4.4.2",
+    "typescript": "^2.1.5"
+  },
+  "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "typings"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "all": true
+  }
+}
