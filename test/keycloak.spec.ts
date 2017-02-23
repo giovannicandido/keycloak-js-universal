@@ -46,7 +46,7 @@ describe('Keycloak', () => {
 
         })
 
-        it('should create url without loginOptions', () => {
+        it('should createLoginUrl without loginOptions', () => {
             let adapter = new BrowserAdapter()
             let redirectUri = encodeURIComponent(adapter.redirectUri(initOptions.redirectUri))
 
@@ -84,26 +84,6 @@ describe('Keycloak', () => {
 
         })
 
-        it('should createLogoutUrl', function () {
-            const keycloak = new Keycloak(initOptions)
-            let adapter = new BrowserAdapter()
-            let redirectUri = encodeURIComponent(adapter.redirectUri(initOptions.redirectUri))
-            const url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
-                `logout?redirect_uri=${redirectUri}`
-            expect(keycloak.createLogoutUrl()).to.equal(url)
-        })
-
-        it('should createLogoutUrl with LogoutOptions', function () {
-            const keycloak = new Keycloak(initOptions)
-            const logoutOptions: LogoutOptions = {
-                redirectUri: "http://localhost/newredirect"
-            }
-            let adapter = new BrowserAdapter()
-            let redirectUri = encodeURIComponent(adapter.redirectUri(logoutOptions.redirectUri))
-            const url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
-                `logout?redirect_uri=${redirectUri}`
-            expect(keycloak.createLogoutUrl(logoutOptions)).to.equal(url)
-        })
     })
 
     it('should override options with init', function () {
@@ -134,6 +114,39 @@ describe('Keycloak', () => {
         }
         const keycloak = new Keycloak(options)
         expect(keycloak.getRealmUrl()).to.equal("http://localhost:8990/realms/master")
+    })
+
+    it('should createLogoutUrl', function () {
+        const keycloak = new Keycloak(initOptions)
+        let adapter = new BrowserAdapter()
+        let redirectUri = encodeURIComponent(adapter.redirectUri(initOptions.redirectUri))
+        const url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
+            `logout?redirect_uri=${redirectUri}`
+        expect(keycloak.createLogoutUrl()).to.equal(url)
+    })
+
+    it('should createLogoutUrl with LogoutOptions', function () {
+        const keycloak = new Keycloak(initOptions)
+        const logoutOptions: LogoutOptions = {
+            redirectUri: "http://localhost/newredirect"
+        }
+        let adapter = new BrowserAdapter()
+        let redirectUri = encodeURIComponent(adapter.redirectUri(logoutOptions.redirectUri))
+        const url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
+            `logout?redirect_uri=${redirectUri}`
+        expect(keycloak.createLogoutUrl(logoutOptions)).to.equal(url)
+    })
+
+    it('should createRegisterUrl', function () {
+        const keycloak = new Keycloak(initOptions)
+        stub(keycloak, 'createUUID').returns('bla')
+        let adapter = new BrowserAdapter()
+
+        let redirectUri = encodeURIComponent(adapter.redirectUri(initOptions.redirectUri))
+        let url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
+            `registrations?client_id=test&redirect_uri=${redirectUri}` +
+            `&state=bla&nonce=bla&response_mode=fragment&response_type=code&scope=openid`
+        expect(keycloak.createRegisterUrl()).to.equal(url)
     })
 
 })

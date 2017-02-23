@@ -18,25 +18,11 @@ export class Keycloak implements KeycloakType {
     private responseType: string
     private responseMode: string
 
-
-    constructor(private initOptions: InitOptions, private adapter: Adapter = new BrowserAdapter()) {
+    constructor(private initOptions: InitOptions, private adapter: Adapter = null) {
+        this.parseOptions(initOptions)
     }
 
-    /**
-     * Initialize Keycloak Auth Flow
-     * @param options If options is not provided, the constructor options will be used instead
-     * @returns {Promise<boolean>}
-     */
-    init(options?: InitOptions): Promise<boolean> {
-        if (options) {
-            return this.initImpl(options)
-        } else {
-            return this.initImpl(this.initOptions)
-        }
-
-    }
-
-    private initImpl(options: InitOptions): Promise<boolean> {
+    parseOptions(options: InitOptions) {
         this.authenticated = false
         if(this.adapter == null) {
             if (options.adapter === 'nativescript') {
@@ -60,6 +46,23 @@ export class Keycloak implements KeycloakType {
         this.flow = validateAndParseFlow(options.flow)
         this.responseType = flowToResponseType(this.flow)
         this.responseMode = validateAndParseMode(options.responseMode)
+    }
+
+    /**
+     * Initialize Keycloak Auth Flow
+     * @param options If options is not provided, the constructor options will be used instead
+     * @returns {Promise<boolean>}
+     */
+    init(options?: InitOptions): Promise<boolean> {
+        if (options) {
+            return this.initImpl(options)
+        } else {
+            return this.initImpl(this.initOptions)
+        }
+
+    }
+
+    private initImpl(options: InitOptions): Promise<boolean> {
 
         return Promise.reject('not implemented')
     }
@@ -156,7 +159,11 @@ export class Keycloak implements KeycloakType {
     }
 
     createRegisterUrl(options?: LoginOptions): string {
-        return undefined
+        if (!options) {
+            options = this.initOptions;
+        }
+        options.action = 'register';
+        return this.createLoginUrl(options);
     }
 
     accountManagement() {
