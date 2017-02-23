@@ -170,7 +170,12 @@ export class Keycloak implements KeycloakType {
     }
 
     createAccountUrl(): string {
-        return undefined
+        const url = this.getRealmUrl()
+            + '/account'
+            + '?referrer=' + encodeURIComponent(this.initOptions.clientId)
+            + '&referrer_uri=' + encodeURIComponent(this.adapter.redirectUri(this.initOptions.redirectUri));
+
+        return url;
     }
 
     hasRealmRole(role: string): boolean {

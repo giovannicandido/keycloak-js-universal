@@ -149,4 +149,16 @@ describe('Keycloak', () => {
         expect(keycloak.createRegisterUrl()).to.equal(url)
     })
 
+    it('should createAccountUrl', function () {
+        const keycloak = new Keycloak(initOptions)
+        stub(keycloak, 'createUUID').returns('bla')
+        let adapter = new BrowserAdapter()
+        let clientId = encodeURI(initOptions.clientId)
+        let redirectUri = encodeURIComponent(adapter.redirectUri(initOptions.redirectUri))
+        let url = `http://localhost:8990/realms/master/` +
+            `account?referrer=${clientId}` +
+            `&referrer_uri=${redirectUri}`
+        expect(keycloak.createAccountUrl()).to.equal(url)
+    })
+
 })
