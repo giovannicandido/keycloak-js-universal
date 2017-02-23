@@ -5,12 +5,12 @@ import * as sinonChai from 'sinon-chai'
 use(sinonChai)
 
 import { Keycloak } from '../src/keycloak'
-import { InitOptions, LoginOptions } from "../src/interfaces"
+import { InitOptions, LoginOptions, LogoutOptions } from "../src/interfaces"
 import { BrowserAdapter } from "../src/adapters"
 
 
 describe('Keycloak', () => {
-    const initOptions: InitOptions = {
+    const initOptions: InitOptions = <InitOptions> {
         url: 'http://localhost:8990',
         clientId: 'test',
         realm: 'master',
@@ -83,10 +83,31 @@ describe('Keycloak', () => {
             expect(keycloak.createLoginUrl(loginOptions)).to.equal(url)
 
         })
+
+        it('should createLogoutUrl', function () {
+            const keycloak = new Keycloak(initOptions)
+            let adapter = new BrowserAdapter()
+            let redirectUri = encodeURIComponent(adapter.redirectUri(initOptions.redirectUri))
+            const url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
+                `logout?redirect_uri=${redirectUri}`
+            expect(keycloak.createLogoutUrl()).to.equal(url)
+        })
+
+        it('should createLogoutUrl with LogoutOptions', function () {
+            const keycloak = new Keycloak(initOptions)
+            const logoutOptions: LogoutOptions = {
+                redirectUri: "http://localhost/newredirect"
+            }
+            let adapter = new BrowserAdapter()
+            let redirectUri = encodeURIComponent(adapter.redirectUri(logoutOptions.redirectUri))
+            const url = `http://localhost:8990/realms/master/protocol/openid-connect/` +
+                `logout?redirect_uri=${redirectUri}`
+            expect(keycloak.createLogoutUrl(logoutOptions)).to.equal(url)
+        })
     })
 
     it('should override options with init', function () {
-        const newOptions: InitOptions = {
+        const newOptions: InitOptions = <InitOptions>{
             url: 'https://localhost',
             clientId: 'test',
             realm: 'master'
@@ -106,7 +127,7 @@ describe('Keycloak', () => {
     })
 
     it('should strip / from getRealmUrl ', function () {
-        const options: InitOptions = {
+        const options: InitOptions = <InitOptions> {
             url: 'http://localhost:8990/',
             clientId: 'test',
             realm: 'master',

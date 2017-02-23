@@ -19,7 +19,7 @@ export class Keycloak implements KeycloakType {
     private responseMode: string
 
 
-    constructor(private initOptions: InitOptions, private adapter: Adapter = null) {
+    constructor(private initOptions: InitOptions, private adapter: Adapter = new BrowserAdapter()) {
     }
 
     /**
@@ -132,7 +132,17 @@ export class Keycloak implements KeycloakType {
     }
 
     createLogoutUrl(options?: LogoutOptions): string {
-        return undefined
+        let uri;
+        if(options) {
+            uri = options.redirectUri
+        }else {
+            uri = this.initOptions.redirectUri
+        }
+        const url = this.getRealmUrl()
+            + '/protocol/openid-connect/logout'
+            + '?redirect_uri=' + encodeURIComponent(this.adapter.redirectUri(uri, false));
+
+        return url;
     }
 
     logout(options?: LogoutOptions) {
