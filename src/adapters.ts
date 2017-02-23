@@ -1,5 +1,10 @@
+import { LoginOptions, LogoutOptions } from "./interfaces"
 export interface Adapter {
     redirectUri(uri: string, encodeHash?: boolean): string
+    login(options?: LoginOptions)
+    logout(options?: LogoutOptions)
+    register(options?: LoginOptions)
+    accountManagement()
 }
 export class BrowserAdapter implements Adapter {
     redirectUri(uri: string, encodeHash = true): string {
@@ -13,6 +18,14 @@ export class BrowserAdapter implements Adapter {
         }
         return redirectUri;
     }
+    // TODO test and login logic
+    login(options?: LoginOptions) {
+
+    }
+    logout(options?: LogoutOptions) {}
+    register(options?: LoginOptions) {}
+    accountManagement(){}
+
 }
 
 export class NativescriptAdapter extends BrowserAdapter {

@@ -161,4 +161,36 @@ describe('Keycloak', () => {
         expect(keycloak.createAccountUrl()).to.equal(url)
     })
 
+    it('should call login in adapter', function () {
+        let adapter = new BrowserAdapter()
+        const keycloak = new Keycloak(initOptions, adapter)
+        let loginSpy = stub(adapter, 'login')
+        keycloak.login()
+        expect(loginSpy).to.have.been.calledOnce
+    })
+
+    it('should call logout in adapter', function () {
+        let adapter = new BrowserAdapter()
+        const keycloak = new Keycloak(initOptions, adapter)
+        let logoutSpy = stub(adapter, 'logout')
+        keycloak.logout()
+        expect(logoutSpy).to.have.been.calledOnce
+    })
+
+    it('should call register in adapter', function () {
+        let adapter = new BrowserAdapter()
+        const keycloak = new Keycloak(initOptions, adapter)
+        let registerSpy = stub(adapter, 'register')
+        keycloak.register()
+        expect(registerSpy).to.have.been.calledOnce
+    })
+
+    it('should call accountManager in adapter', function () {
+        let adapter = new BrowserAdapter()
+        const keycloak = new Keycloak(initOptions, adapter)
+        let registerSpy = stub(adapter, 'accountManagement')
+        keycloak.accountManagement()
+        expect(registerSpy).to.have.been.calledOnce
+    })
+
 })

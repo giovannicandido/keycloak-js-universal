@@ -68,6 +68,7 @@ export class Keycloak implements KeycloakType {
     }
 
     login(options?: LoginOptions) {
+        return this.adapter.login(options)
     }
 
     createLoginUrl(options?: LoginOptions) {
@@ -149,6 +150,7 @@ export class Keycloak implements KeycloakType {
     }
 
     logout(options?: LogoutOptions) {
+        this.adapter.logout(options)
     }
 
     updateToken(minValue?: number): Promise<string> {
@@ -156,6 +158,7 @@ export class Keycloak implements KeycloakType {
     }
 
     register(options?: LoginOptions) {
+        this.adapter.register(options)
     }
 
     createRegisterUrl(options?: LoginOptions): string {
@@ -167,6 +170,7 @@ export class Keycloak implements KeycloakType {
     }
 
     accountManagement() {
+        this.adapter.accountManagement()
     }
 
     createAccountUrl(): string {
